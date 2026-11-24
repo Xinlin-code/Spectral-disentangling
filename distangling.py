@@ -58,20 +58,21 @@ def get_matrix_N(Ln_wave, V, delta):
         m = int(R)
         for i in range(len(Ln_wave)):  
             if m+i == len(Ln_wave): break
-            N[m+i][i] = np.mod(R, 1)
+            N[m+i][i] = 1 - np.mod(R, 1)
             if m+i < len(Ln_wave)-1:
-                N[m+i+1][i] = 1 - np.mod(R, 1)
+                N[m+i+1][i] = np.mod(R, 1)
 
     #if blue-shift 
     if V < 0:
         N = np.zeros((len(Ln_wave), len(Ln_wave)))
         R = np.log10(1 + V/299792.458) / delta  
         m = int(-R)
+        frac = abs(R) - int(abs(R))
         for i in range(len(Ln_wave)): 
             if m+i == len(Ln_wave): break
-            N[i][m+i] = 1 - np.mod(R, 1)
+            N[i][m+i]   = 1 - frac
             if m+i < len(Ln_wave)-1:
-                N[i][m+i+1] = np.mod(R, 1)   
+                N[i][m+i+1] = frac
     return N
 
 def get_matrix_M(lw, vA, q, v0, delta):
